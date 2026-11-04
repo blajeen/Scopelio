@@ -16,12 +16,13 @@ Extensão de navegador open source para destacar termos em páginas e comparar a
 
 Não é necessário instalar dependências para usar a extensão. Requer Chrome/Edge 120 ou superior. Firefox e Safari ainda não são alvos desta versão.
 
-## O que a v0.1 faz
+## O que a v0.2 faz
 
 - Criar, editar, excluir e pausar filtros, com vários termos e cor personalizada.
 - Palavra inteira, diferenciação de maiúsculas e busca sem acentos.
 - Destaques com CSS Custom Highlight API, sem reescrever o HTML dos sites.
 - Donut com total, quantidade e percentual por filtro; legenda selecionável.
+- **Scopelio Orbit:** donut flutuante opcional, sem fundo, com opacidade ajustável entre 20% e 100%, posição arrastável e navegação pelas ocorrências.
 - Navegação anterior/próxima entre todas as ocorrências ou apenas as de um filtro.
 - Pausa global e ativação automática opcional por site.
 - Atualização após mudanças no conteúdo da página.
@@ -29,6 +30,8 @@ Não é necessário instalar dependências para usar a extensão. Requer Chrome/
 - Configurações persistidas localmente, sem conta, telemetria ou serviços externos.
 
 O popup analisa a aba ao ser aberto. **Sempre neste site** pede acesso opcional ao domínio atual e habilita a análise em visitas futuras. Desativar essa opção remove a permissão correspondente. A pausa global suspende os destaques e registros automáticos; suas preferências são preservadas.
+
+Ative **Mostrar donut flutuante** abaixo do gráfico para manter o Orbit na página com o popup fechado. Arraste pelo cabeçalho `scopelio / orbit` ou use as setas do teclado com o cabeçalho focado (Shift para passos maiores). A posição é salva e ajustada ao tamanho da janela. Escolha um arco colorido para navegar apenas naquele filtro; selecione-o novamente para voltar a todas as ocorrências. O centro transparente permite clicar na página por baixo. Controles de opacidade e redefinição aparecem ao interagir. O × desativa o modo flutuante; a pausa global também o oculta. Para aparecer em visitas futuras, habilite **Sempre neste site**.
 
 ## Como interpretar os resultados
 
@@ -52,7 +55,7 @@ npm run test:browser
 npm run build
 ```
 
-O build copia a extensão para `dist/scopelio`. No Windows, também cria `dist/scopelio-0.1.0.zip` pronto para envio à loja. O ZIP é um pacote de distribuição; o envio e a aprovação pela loja são etapas separadas.
+O build copia a extensão para `dist/scopelio`. No Windows, também cria `dist/scopelio-0.2.0.zip` pronto para envio à loja. O ZIP é um pacote de distribuição; o envio e a aprovação pela loja são etapas separadas.
 
 Os testes de navegador carregam a extensão real em Chromium, usam uma página local e verificam CRUD, contagens, atualização dinâmica, destaques, navegação, pausa e preferências. Capturas são salvas em `test-results`. O consentimento real de permissões por site deve ser verificado manualmente conforme [CONTRIBUTING.md](CONTRIBUTING.md).
 

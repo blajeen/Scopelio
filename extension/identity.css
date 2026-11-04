@@ -1,0 +1,68 @@
+/* Scopelio's orbital signature: fine calibration rings, iris details and quiet color. */
+.app { padding-top: 21px; }
+.topbar { margin-bottom: 24px; }
+.brand { font-weight: 700; letter-spacing: -1.2px; }
+.brand-icon { width: 35px; height: 35px; }
+.intro { position: relative; padding-left: 13px; border-left: 1px solid #9e8ce777; }
+.eyebrow { font-size: 8px; letter-spacing: 1.65px; }
+h1 { font-size: 27px; letter-spacing: -1.1px; }
+.analytics { border-radius: 24px 24px 12px 24px; padding-top: 20px; }
+.analytics:before { content: ''; position: absolute; top: 0; left: 26px; right: 26px; height: 2px; background: linear-gradient(90deg,#8b7cf888,#43bfa866,#f2ac5844); }
+.section-heading h2 { display: flex; align-items: center; gap: 7px; font-size: 12px; }
+.section-heading h2:before { content: ''; width: 5px; height: 5px; border-radius: 100%; background: var(--accent); box-shadow: 0 0 0 3px #8b7cf815; }
+.chart-area { height: 192px; }
+.chart-area svg { width: 178px; height: 178px; }
+.orbit-ruler { fill: none; stroke: var(--muted); stroke-width: .8; stroke-opacity: .38; stroke-dasharray: 1 7; }
+.orbit-guide { fill: none; stroke: var(--accent); stroke-width: .5; stroke-opacity: .13; }
+.chart-center:before { content: '+'; position: absolute; top: -17px; font-weight: 300; font-size: 13px; color: var(--accent); opacity: .7; }
+.chart-center strong { font-size: 36px; font-weight: 550; }
+.chart-center span { font-size: 9px; letter-spacing: .6px; }
+.chart-note { font-size: 9px; }
+.chart-spark { display: none; }
+.filters-heading { margin-top: 20px; }
+.add-button { color: var(--accent); background: #8b7cf80a; border-color: #8b7cf833; box-shadow: none; }
+.add-button span[data-i18n] { font-size: 10px; margin-right: 0; }
+.filter-card { border-radius: 10px 16px 16px 10px; padding: 13px 12px; }
+.filter-swatch { width: 3px; }
+.filter-info small { font-size: 10px; }
+.floating-controls { border-radius: 14px; margin-top: 12px; padding: 13px; border-color: #b8a8ed44; background: linear-gradient(110deg,#8b7cf80b,transparent),var(--glass); }
+.floating-heading { display: flex; justify-content: space-between; align-items: center; }
+.floating-heading>div { display: flex; align-items: center; gap: 10px; }
+.floating-heading label { font-size: 11px; font-weight: 650; letter-spacing: -.1px; cursor: pointer; }
+.floating-heading p { margin: 3px 0 0; font-size: 9px; color: var(--muted); }
+.orbit-symbol { color: var(--accent); font-size: 29px; line-height: 1; }
+#floating-options { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; }
+#floating-options label { font-size: 10px; color: var(--muted); }
+#floating-opacity { min-width: 0; flex: 1; height: 14px; accent-color: var(--accent); cursor: pointer; }
+#opacity-value { width: 32px; text-align: right; font-size: 10px; font-variant-numeric: tabular-nums; color: var(--accent); }
+.primary-button { background: linear-gradient(125deg,#8b7cf8,#7160d3); box-shadow: 0 3px 12px #7868d922; }
+.primary-button span:first-child { margin-left: 0; }
+html[data-reduced=true] .floating-controls { background: var(--surface); }
+
+/* A compact reading surface; detail is revealed by hovering or focusing a filter. */
+.intro { margin-bottom: 17px; }
+.intro p { display: none; }
+h1 { font-size: 25px; margin-bottom: 0; }
+.analytics { display: grid; grid-template-columns: 148px minmax(0,1fr); column-gap: 12px; padding: 17px 15px 12px; }
+.section-heading { grid-column: 1 / -1; margin-bottom: 5px; }
+.chart-area { grid-column: 1; grid-row: 2; width: 148px; height: 166px; }
+.chart-area svg { width: 148px; height: 148px; }
+.chart-center strong { font-size: 29px; }
+.chart-center span { max-width: 83px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
+.chart-center:before { top: -15px; }
+.legend { grid-column: 2; grid-row: 2; align-self: center; max-height: 172px; overflow-y: auto; }
+.legend-row { display: grid; grid-template-columns: 6px minmax(0,1fr) auto; gap: 6px; padding: 9px 3px; }
+.legend-row .color-dot { width: 6px; height: 6px; }
+.legend-name { font-size: 10px; }
+.legend-count { grid-column: 2; grid-row: 2; font-size: 9px; }
+.legend-percent { grid-column: 3; grid-row: 1 / 3; width: auto; font-size: 10px; }
+.chart-caption { grid-column: 1 / -1; min-height: 15px; font-size: 9px; margin-bottom: 2px; }
+.chart-note { grid-column: 1 / -1; font-size: 8px; margin-top: 5px; padding-top: 8px; }
+.segment { transition: opacity .18s,stroke-width .18s; }
+.floating-controls { margin-top: 10px; padding: 11px 13px; }
+.floating-heading p { font-size: 9px; }
+.filters-heading { margin-top: 18px; }
+.filters-heading p { display: none; }
+.filter-card { padding: 11px 12px; }
+.site-controls { margin-top: 12px; }
+.topbar { margin-bottom: 20px; }

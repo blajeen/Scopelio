@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Scopelio — Color Highlights & Donut Analytics",
   "short_name": "Scopelio",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "default_locale": "en",
   "minimum_chrome_version": "120",
   "description": "__MSG_description__",

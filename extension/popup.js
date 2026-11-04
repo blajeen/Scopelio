@@ -27,7 +27,7 @@ async function scan() {
   if (!sitePattern || busy) return;
   busy = true; $('rescan').disabled = true; status(t('scanning'));
   try {
-    await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['shared.js', 'matcher.js', 'content.js'] });
+    await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['shared.js', 'i18n.js', 'matcher.js', 'orbit.js', 'content.js'] });
     stats = await send({ type: 'SCOPPELIO_SCAN', manual: true });
     renderChart(); showScanStatus();
   } catch {
@@ -42,6 +42,14 @@ function showScanStatus() {
   else status('');
 }
 function selectFilter(id) { selectedFilter = selectedFilter === id ? null : id; $('position').textContent = '—'; renderChart(); }
+function previewFilter(id) {
+  const filter = settings.filters.find(f => f.id === (id || selectedFilter));
+  const count = filter ? stats.counts?.[filter.id] || 0 : stats.total;
+  $('total').textContent = count.toLocaleString(locale());
+  document.querySelector('.chart-center span').textContent = filter?.name || t('occurrences');
+  $('chart-caption').textContent = filter ? `${(stats.total ? count / stats.total * 100 : 0).toLocaleString(locale(), { maximumFractionDigits: 1 })}% · ${count} ${t('occurrences')}` : $('chart-caption').dataset.summary;
+  for (const segment of $('segments').children) segment.style.opacity = filter && segment.dataset.filter !== filter.id ? '.25' : '1';
+}
 function renderChart() {
   $('total').textContent = stats.total.toLocaleString(locale());
   $('segments').replaceChildren(); $('legend').replaceChildren();
@@ -59,6 +67,8 @@ function renderChart() {
       circle.setAttribute('stroke-dasharray', `${Math.max(0, length - (active.filter(f => stats.counts?.[f.id]).length > 1 ? 4 : 0))} ${circumference}`);
       circle.setAttribute('stroke-dashoffset', -offset); offset += length;
       circle.classList.add('segment'); if (selectedFilter === filter.id) circle.classList.add('selected');
+      circle.dataset.filter = filter.id;
+      circle.addEventListener('pointerenter', () => previewFilter(filter.id)); circle.addEventListener('pointerleave', () => previewFilter(null));
       const title = document.createElementNS(svgNS, 'title'); title.textContent = `${filter.name}: ${count} (${percent.toFixed(1)}%)`; circle.append(title);
       circle.addEventListener('click', () => selectFilter(filter.id)); $('segments').append(circle);
     }
@@ -67,13 +77,17 @@ function renderChart() {
     const dot = element('span', 'color-dot'); dot.style.backgroundColor = filter.color;
     row.append(dot, element('span', 'legend-name', filter.name), element('span', 'legend-count', String(count)), element('span', 'legend-percent', `${percent.toLocaleString(locale(), { maximumFractionDigits: 1 })}%`));
     row.addEventListener('click', () => selectFilter(filter.id)); $('legend').append(row);
+    row.addEventListener('pointerenter', () => previewFilter(filter.id)); row.addEventListener('pointerleave', () => previewFilter(null));
+    row.addEventListener('focus', () => previewFilter(filter.id)); row.addEventListener('blur', () => previewFilter(null));
   });
   $('donut').setAttribute('aria-label', `${stats.total} ${t('occurrences')}. ${active.map(f => `${f.name}: ${stats.counts?.[f.id] || 0}`).join('. ')}`);
   const leading = active.reduce((best, f) => (stats.counts?.[f.id] || 0) > (stats.counts?.[best?.id] || 0) ? f : best, null);
   const tied = leading && active.filter(f => stats.counts?.[f.id] === stats.counts?.[leading.id]).length > 1;
   $('chart-caption').textContent = stats.total && leading ? (tied ? t('balanced') : `${leading.name} ${t('leading')}`) : t('emptyChart');
+  $('chart-caption').dataset.summary = $('chart-caption').textContent;
   $('navigator').hidden = !stats.total;
   $('navigation-label').textContent = settings.filters.find(f => f.id === selectedFilter)?.name || t('all');
+  previewFilter(null);
 }
 function renderFilters() {
   $('filters').replaceChildren(); $('filter-count').textContent = settings.filters.length;
@@ -117,6 +131,7 @@ async function init() {
   $('enabled').checked = settings.enabled;
   $('theme').value = settings.theme; $('reduce-transparency').checked = settings.reduceTransparency;
   $('language').value = settings.language;
+  renderFloating();
   renderFilters(); renderChart();
   [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   try {
@@ -199,3 +214,22 @@ $('language').addEventListener('change', async event => {
   await persist();
 });
 init().catch(() => status(t('loadError')));
+function renderFloating() {
+  $('floating-enabled').checked = settings.floating.enabled;
+  $('floating-opacity').value = Math.round(settings.floating.opacity * 100);
+  $('opacity-value').textContent = `${Math.round(settings.floating.opacity * 100)}%`;
+  $('floating-options').hidden = !settings.floating.enabled;
+}
+$('floating-enabled').addEventListener('change', async event => {
+  settings.floating.enabled = event.target.checked; renderFloating(); await persist();
+  if (sitePattern) await scan();
+});
+$('floating-opacity').addEventListener('input', event => {
+  settings.floating.opacity = Number(event.target.value) / 100;
+  $('opacity-value').textContent = `${event.target.value}%`;
+});
+$('floating-opacity').addEventListener('change', persist);
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local' || !changes.settings || !settings) return;
+  settings.floating = Scopelio.sanitize(changes.settings.newValue).floating; renderFloating();
+});

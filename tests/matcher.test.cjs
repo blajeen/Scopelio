@@ -40,3 +40,10 @@ test('settings preserve all 2,000 terms and default to English', () => {
   assert.equal(settings.language, 'en');
   assert.equal(Scopelio.sanitize({ language: 'pt-BR' }).language, 'pt-BR');
 });
+test('floating widget is opt-in and clamps opacity when migrating old settings', () => {
+  require('../extension/shared.js');
+  assert.deepEqual(Scopelio.sanitize({}).floating, { enabled: false, opacity: 0.78 });
+  assert.equal(Scopelio.sanitize({ floating: { enabled: true, opacity: 0 } }).floating.opacity, 0.2);
+  assert.equal(Scopelio.sanitize({ floating: { opacity: 4 } }).floating.opacity, 1);
+  assert.equal(Scopelio.sanitize({ floating: { opacity: 'invalid' } }).floating.opacity, 0.78);
+});

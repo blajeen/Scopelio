@@ -1,6 +1,6 @@
 (() => {
   if (globalThis.Scopelio) return;
-  const defaults = { enabled: true, filters: [], sites: [], language: 'en', theme: 'system', reduceTransparency: false };
+  const defaults = { enabled: true, filters: [], sites: [], language: 'en', theme: 'system', reduceTransparency: false, floating: { enabled: false, opacity: 0.78 } };
   const palette = ['#8b7cf8', '#43bfa8', '#f2ac58', '#ed7c9c', '#63a5ed', '#c98de5'];
   function sanitize(value = {}) {
     return {
@@ -18,6 +18,7 @@
       sites: [...new Set((Array.isArray(value.sites) ? value.sites : []).filter(s => /^https?:\/\/[^/]+\/\*$/.test(s)))],
       theme: ['system', 'light', 'dark'].includes(value.theme) ? value.theme : 'system',
       language: value.language === 'pt-BR' ? 'pt-BR' : 'en',
+      floating: { enabled: value.floating?.enabled === true, opacity: Number.isFinite(value.floating?.opacity) ? Math.max(0.2, Math.min(1, value.floating.opacity)) : 0.78 },
       reduceTransparency: value.reduceTransparency === true
     };
   }

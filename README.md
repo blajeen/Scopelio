@@ -15,6 +15,7 @@ Built with a minimal liquid glass interface: soft translucency, subtle borders, 
 - **Flexible matching:** whole words, case sensitivity, and accent-insensitive search.
 - **Color highlights:** browser-native text highlights without rewriting page HTML.
 - **Donut analytics:** total occurrences, count and percentage per filter.
+- **Scopelio Orbit:** an optional, background-free floating donut that stays on the page, with adjustable opacity, drag positioning, keyboard movement and match navigation.
 - **Match navigation:** previous/next across all matches or one selected filter.
 - **Site controls:** global pause and optional automatic activation per site.
 - **Dynamic content:** updates when page text changes.
@@ -26,9 +27,9 @@ Built with a minimal liquid glass interface: soft translucency, subtle borders, 
 
 ## Install
 
-Scopelio v0.1.0 is available as a manually installed extension. Store publication is still pending. Supports **Chrome and Microsoft Edge 120+**. Firefox and Safari are not supported in this release.
+Scopelio v0.2.0 is available as a manually installed extension. Store publication is still pending. Supports **Chrome and Microsoft Edge 120+**. Firefox and Safari are not supported in this release.
 
-1. Download `scopelio-0.1.0.zip` from [Releases](https://github.com/blajeen/Scopelio/releases/latest) and extract it. Alternatively, clone this repository and use its `extension` folder.
+1. Download `scopelio-0.2.0.zip` from [Releases](https://github.com/blajeen/Scopelio/releases/latest) and extract it. Alternatively, clone this repository and use its `extension` folder.
 2. Open `chrome://extensions` in Chrome or `edge://extensions` in Edge.
 3. Enable **Developer mode**.
 4. Choose **Load unpacked** and select the extracted folder containing `manifest.json` (or the repository's `extension` folder).
@@ -46,6 +47,16 @@ No dependencies or build step are required to use the extension.
 6. Open **Preferences** (gear icon) to change language, theme or transparency. Use the top switch to pause Scopelio globally.
 
 Filters are saved in your local browser profile. Disabling automatic activation removes the corresponding optional site permission. The popup can still analyze the current page when opened manually.
+
+### Scopelio Orbit
+
+<img src="docs/assets/orbit.png" width="184" align="right" alt="Background-free Scopelio Orbit floating donut">
+
+Enable **Show floating donut** below the chart to keep your analytics on the page after closing the popup. Orbit has no panel background: its center and unused space let clicks pass through to the website. Select a colored arc to focus that filter, then use the arrows to navigate its matches. Select the same arc again to return to all matches.
+
+Drag the `scopelio / orbit` handle to place it anywhere, or focus the handle and use arrow keys (Shift for larger steps). Position is saved locally and remains within the viewport after resizing. Adjust opacity from **20% to 100%** in the popup, or use the controls revealed when hovering over or focusing Orbit. Controls become fully visible during interaction. The reset button returns it to the lower-right corner; × turns off the floating donut. Global pause also hides Orbit. Automatic display on future visits requires **Always on this site**.
+
+Hover over a colored arc to preview that filter's count and share; other colors soften to keep your focus. This also works with keyboard focus. Orbit updates with dynamic page content even when the popup is closed. Its own labels and controls are excluded from page analysis. No additional permissions or external services are required.
 
 ## Understanding the chart
 
@@ -86,7 +97,7 @@ npm run test:browser
 npm run build
 ```
 
-The build creates `dist/scopelio`; on Windows it also creates `dist/scopelio-0.1.0.zip`. Runtime code has no third-party dependencies and needs no bundler. Playwright is used only for development tests.
+The build creates `dist/scopelio`; on Windows it also creates `dist/scopelio-0.2.0.zip`. Runtime code has no third-party dependencies and needs no bundler. Playwright is used only for development tests.
 
 ```text
 extension/       Manifest, popup, translations, matching engine, content script
@@ -101,7 +112,7 @@ Integration tests load a real extension in an isolated Chromium profile. The tes
 
 Bug reports, accessibility improvements, translations and focused pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md), include reproduction steps, and avoid sharing sensitive page content in public issues.
 
-Planned improvements include filter collections, configuration import/export and additional browser support. These are not part of v0.1.0. Store submission follows the [publishing checklist](docs/STORE_CHECKLIST.md).
+Planned improvements include filter collections, configuration import/export and additional browser support. These are not part of v0.2.0. Store submission follows the [publishing checklist](docs/STORE_CHECKLIST.md).
 
 ## License
 
