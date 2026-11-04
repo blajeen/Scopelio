@@ -66,3 +66,16 @@ h1 { font-size: 25px; margin-bottom: 0; }
 .filter-card { padding: 11px 12px; }
 .site-controls { margin-top: 12px; }
 .topbar { margin-bottom: 20px; }
+.filters-heading>div:first-child { margin-right: auto; }
+.transfer-button { margin-right: 7px; font-size: 17px; }
+.transfer-actions { display: flex; gap: 10px; margin: 17px 0; }
+.transfer-hint { color: var(--muted); font-size: 11px; }
+.transfer-privacy { border-top: 1px solid var(--line); margin: 18px 0 0; padding-top: 12px; color: var(--muted); font-size: 10px; }
+#import-preview { border-top: 1px solid var(--line); padding-top: 12px; }
+#import-preview h3 { margin-bottom: 4px; font-size: 12px; }
+#import-summary { margin-top: 0; color: var(--muted); font-size: 10px; }
+#import-list { list-style: none; padding: 0; margin: 12px 0 18px; max-height: 148px; overflow-y: auto; }
+#import-list li { display: flex; align-items: center; gap: 8px; padding: 7px 2px; font-size: 11px; }
+#import-list li>span:nth-child(2) { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#import-list small { color: var(--muted); font-size: 10px; }
+#transfer-title { font-size: 21px; }

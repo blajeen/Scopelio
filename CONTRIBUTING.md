@@ -20,5 +20,6 @@ Validação manual antes de uma versão:
 10. Ativar Orbit, arrastar, mover pelo teclado, ajustar a opacidade, redimensionar a janela e confirmar que a posição sobrevive ao recarregamento.
 11. Conferir o preview ao passar o mouse e ao focar filtros nos dois donuts; o centro do Orbit deve permitir clicar na página por baixo.
 12. Fechar o popup, alterar conteúdo da página e confirmar atualização do Orbit; testar ×, pausa global e reativação.
+13. Exportar `.txt`, importar com adicionar/substituir e verificar nomes, acentos, cores e opções. Testar cancelamento, arquivo inválido e lista simples. Confirmar que não há alteração de permissões nem perda de filtros em erros.
 
 Não adicione requisições externas, execução remota de código ou permissões amplas sem discutir a necessidade e atualizar a política de privacidade.

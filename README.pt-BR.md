@@ -16,9 +16,10 @@ Extensão de navegador open source para destacar termos em páginas e comparar a
 
 Não é necessário instalar dependências para usar a extensão. Requer Chrome/Edge 120 ou superior. Firefox e Safari ainda não são alvos desta versão.
 
-## O que a v0.2 faz
+## O que a v0.3 faz
 
 - Criar, editar, excluir e pausar filtros, com vários termos e cor personalizada.
+- Exportar e importar filtros por `.txt`, com prévia, opção de adicionar ou substituir e suporte a listas simples de termos.
 - Palavra inteira, diferenciação de maiúsculas e busca sem acentos.
 - Destaques com CSS Custom Highlight API, sem reescrever o HTML dos sites.
 - Donut com total, quantidade e percentual por filtro; legenda selecionável.
@@ -34,6 +35,8 @@ O popup analisa a aba ao ser aberto. **Sempre neste site** pede acesso opcional 
 Ative **Mostrar donut flutuante** abaixo do gráfico para manter o Orbit na página com o popup fechado. Arraste pelo cabeçalho `scopelio / orbit` ou use as setas do teclado com o cabeçalho focado (Shift para passos maiores). A posição é salva e ajustada ao tamanho da janela. Escolha um arco colorido para navegar apenas naquele filtro; selecione-o novamente para voltar a todas as ocorrências. O centro transparente permite clicar na página por baixo. Controles de opacidade e redefinição aparecem ao interagir. O × desativa o modo flutuante; a pausa global também o oculta. Para aparecer em visitas futuras, habilite **Sempre neste site**.
 
 ## Como interpretar os resultados
+
+Para transferir filtros, clique no **⇅** ao lado de **Seus filtros**. **Exportar .txt** salva nomes, termos, cores e opções de busca de todos os filtros. **Importar .txt** mostra uma prévia antes de adicionar ou substituir sua lista. Também aceita texto UTF-8 com um termo por linha (ou separado por vírgulas), criando um filtro com o nome do arquivo e a cor roxa padrão. Arquivos inválidos ou cancelados não alteram os filtros atuais. O limite do arquivo é 16 MB; os limites de filtros e termos continuam iguais. Permissões de sites e conteúdo de páginas não são exportados. [Formato e exemplos](docs/TEXT_FILTERS.md).
 
 O percentual é `ocorrências do filtro / total de ocorrências atribuídas × 100`. Ele não mede a proporção de todo o texto, relevância semântica nem sentimento. Pequenas diferenças na soma dos percentuais podem ocorrer por arredondamento.
 
@@ -55,7 +58,7 @@ npm run test:browser
 npm run build
 ```
 
-O build copia a extensão para `dist/scopelio`. No Windows, também cria `dist/scopelio-0.2.0.zip` pronto para envio à loja. O ZIP é um pacote de distribuição; o envio e a aprovação pela loja são etapas separadas.
+O build copia a extensão para `dist/scopelio`. No Windows, também cria `dist/scopelio-0.3.0.zip` pronto para envio à loja. O ZIP é um pacote de distribuição; o envio e a aprovação pela loja são etapas separadas.
 
 Os testes de navegador carregam a extensão real em Chromium, usam uma página local e verificam CRUD, contagens, atualização dinâmica, destaques, navegação, pausa e preferências. Capturas são salvas em `test-results`. O consentimento real de permissões por site deve ser verificado manualmente conforme [CONTRIBUTING.md](CONTRIBUTING.md).
 
