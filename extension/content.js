@@ -3,8 +3,9 @@
   globalThis.__scopelioContent = true;
   const MAX_TEXT = 1500000, MAX_MATCHES = 20000;
   const excluded = 'script,style,noscript,textarea,input,select,option,button,svg,canvas,[contenteditable]:not([contenteditable="false"]),[hidden],[aria-hidden="true"]';
-  let settings, manual = false, ranges = [], current = -1, selected = null, timer, generation = 0;
+  let settings, manual = false, ranges = [], current = -1, selected = null, timer, generation = 0, mutationStarted = null;
   let snapshot = { total: 0, counts: {}, active: false, truncated: false };
+  let lastInput = null, lastFilters = '';
   const names = new Set();
   const orbit = new ScopelioOrbit();
   const style = document.createElement('style');
@@ -41,33 +42,48 @@
   }
   async function scan() {
     const version = ++generation;
-    clear();
-    snapshot = { total: 0, counts: Object.fromEntries(settings.filters.map(f => [f.id, 0])), active: isActive(), truncated: false };
-    if (!snapshot.active) { orbit.update(settings, snapshot, navigate); return; }
-    if (!globalThis.Highlight || !CSS.highlights) { snapshot.error = 'unsupported'; orbit.update(settings, snapshot, navigate); return; }
+    const scanSettings = settings;
+    const nextSnapshot = { total: 0, counts: Object.fromEntries(scanSettings.filters.map(f => [f.id, 0])), active: isActive(), truncated: false };
+    if (!nextSnapshot.active || !globalThis.Highlight || !CSS.highlights) {
+      clear(); lastInput = null; snapshot = nextSnapshot;
+      if (nextSnapshot.active) snapshot.error = 'unsupported';
+      orbit.update(settings, snapshot, navigate); return;
+    }
     const collected = textBlocks();
-    snapshot.truncated = collected.truncated;
+    const filterKey = JSON.stringify(scanSettings.filters);
+    const unchanged = lastInput && lastFilters === filterKey && collected.truncated === lastInput.truncated && collected.blocks.length === lastInput.blocks.length && collected.blocks.every((block, i) => {
+      const previous = lastInput.blocks[i];
+      return block.text === previous.text && block.nodes.length === previous.nodes.length && block.nodes.every((part, n) => part.node === previous.nodes[n].node && part.start === previous.nodes[n].start && part.end === previous.nodes[n].end);
+    });
+    if (unchanged) { orbit.update(settings, snapshot, navigate); return; }
+    nextSnapshot.truncated = collected.truncated;
     const grouped = new Map();
+    const nextRanges = [];
     let index = 0;
     for (const block of collected.blocks) {
-      const found = ScopelioMatcher.findMatches(block.text, settings.filters, MAX_MATCHES - ranges.length);
-      snapshot.truncated ||= found.truncated;
+      const found = ScopelioMatcher.findMatches(block.text, scanSettings.filters, MAX_MATCHES - nextRanges.length);
+      nextSnapshot.truncated ||= found.truncated;
+      let firstIndex = 0, lastIndex = 0;
       for (const match of found.matches) {
-        const first = block.nodes.find(n => n.end > match.start);
-        const last = block.nodes.find(n => n.end >= match.end);
+        while (block.nodes[firstIndex].end <= match.start) firstIndex++;
+        while (block.nodes[lastIndex].end < match.end) lastIndex++;
+        const first = block.nodes[firstIndex], last = block.nodes[lastIndex];
         const range = document.createRange();
         range.setStart(first.node, match.start - first.start); range.setEnd(last.node, match.end - last.start);
-        ranges.push({ range, filterId: match.filterId });
+        nextRanges.push({ range, filterId: match.filterId });
         if (!grouped.has(match.filterId)) grouped.set(match.filterId, []);
         grouped.get(match.filterId).push(range);
-        snapshot.counts[match.filterId]++;
+        nextSnapshot.counts[match.filterId]++;
       }
-      if (ranges.length >= MAX_MATCHES) { snapshot.truncated = true; break; }
+      if (nextRanges.length >= MAX_MATCHES) { nextSnapshot.truncated = true; break; }
       if (++index % 100 === 0) { await new Promise(resolve => setTimeout(resolve, 0)); if (version !== generation) return; }
     }
-    snapshot.total = ranges.length;
+    if (version !== generation) return;
+    clear(); ranges = nextRanges;
+    nextSnapshot.total = ranges.length; snapshot = nextSnapshot;
+    lastInput = collected; lastFilters = filterKey;
     let rules = '';
-    settings.filters.forEach((filter, i) => {
+    scanSettings.filters.forEach((filter, i) => {
       const name = `scopelio-${i}`;
       const highlight = new Highlight(...(grouped.get(filter.id) || []));
       CSS.highlights.set(name, highlight); names.add(name);
@@ -109,7 +125,9 @@
   const observer = new MutationObserver(records => {
     const own = node => node === orbit.host || node === style || style.contains(node);
     if (!settings || !isActive() || records.every(r => own(r.target) || r.type === 'childList' && [...r.addedNodes, ...r.removedNodes].every(own))) return;
-    clearTimeout(timer); timer = setTimeout(() => refresh(true), 350);
+    mutationStarted ??= performance.now();
+    const delay = Math.min(350, Math.max(0, 1500 - (performance.now() - mutationStarted)));
+    clearTimeout(timer); timer = setTimeout(() => { mutationStarted = null; scan(); }, delay);
   });
   observer.observe(document.body || document.documentElement, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['hidden', 'class', 'style', 'aria-hidden'] });
   refresh();

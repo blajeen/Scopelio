@@ -41,13 +41,20 @@ function showScanStatus() {
   else if (settings.filters.some(f => f.enabled) && !stats.total) status(t('noMatches'));
   else status('');
 }
-function selectFilter(id) { selectedFilter = selectedFilter === id ? null : id; $('position').textContent = '—'; renderChart(); }
+function selectFilter(id) {
+  selectedFilter = selectedFilter === id ? null : id;
+  $('position').textContent = '—';
+  $('navigation-label').textContent = settings.filters.find(f => f.id === selectedFilter)?.name || t('all');
+  for (const row of $('legend').children) { const selected = row.dataset.filter === selectedFilter; row.classList.toggle('selected', selected); row.setAttribute('aria-pressed', String(selected)); }
+  for (const segment of $('segments').children) segment.classList.toggle('selected', segment.dataset.filter === selectedFilter);
+  previewFilter(null);
+}
 function previewFilter(id) {
   const filter = settings.filters.find(f => f.id === (id || selectedFilter));
   const count = filter ? stats.counts?.[filter.id] || 0 : stats.total;
-  $('total').textContent = count.toLocaleString(locale());
-  document.querySelector('.chart-center span').textContent = filter?.name || t('occurrences');
-  $('chart-caption').textContent = filter ? `${(stats.total ? count / stats.total * 100 : 0).toLocaleString(locale(), { maximumFractionDigits: 1 })}% · ${count} ${t('occurrences')}` : $('chart-caption').dataset.summary;
+  // Keep the total stable. Filter details belong outside the ring.
+  document.querySelector('.chart-center span').textContent = t('occurrences');
+  $('chart-caption').textContent = filter ? `${filter.name} · ${count.toLocaleString(locale())} ${t('occurrences')} · ${(stats.total ? count / stats.total * 100 : 0).toLocaleString(locale(), { maximumFractionDigits: 1 })}%` : $('chart-caption').dataset.summary;
   for (const segment of $('segments').children) segment.style.opacity = filter && segment.dataset.filter !== filter.id ? '.25' : '1';
 }
 function renderChart() {
@@ -73,6 +80,7 @@ function renderChart() {
       circle.addEventListener('click', () => selectFilter(filter.id)); $('segments').append(circle);
     }
     const row = element('button', `legend-row${selectedFilter === filter.id ? ' selected' : ''}`);
+    row.dataset.filter = filter.id;
     row.setAttribute('aria-pressed', String(selectedFilter === filter.id));
     const dot = element('span', 'color-dot'); dot.style.backgroundColor = filter.color;
     row.append(dot, element('span', 'legend-name', filter.name), element('span', 'legend-count', String(count)), element('span', 'legend-percent', `${percent.toLocaleString(locale(), { maximumFractionDigits: 1 })}%`));

@@ -1,6 +1,6 @@
 # Política de privacidade — Scopelio
 
-Atualizada em 4 de novembro de 2026. Aplicável à versão 0.3.0.
+Atualizada em 4 de novembro de 2026. Aplicável à versão 0.4.0.
 
 A Scopelio analisa o texto das páginas localmente no navegador para destacar termos e calcular suas contagens. O conteúdo das páginas e as ocorrências não são enviados a servidores nem persistidos pela extensão. Os resultados permanecem em memória enquanto a página estiver aberta.
 

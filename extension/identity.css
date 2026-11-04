@@ -39,25 +39,27 @@ h1 { font-size: 27px; letter-spacing: -1.1px; }
 .primary-button span:first-child { margin-left: 0; }
 html[data-reduced=true] .floating-controls { background: var(--surface); }
 
-/* A compact reading surface; detail is revealed by hovering or focusing a filter. */
+/* Give the chart its own space. The center is reserved for the stable total. */
 .intro { margin-bottom: 17px; }
 .intro p { display: none; }
 h1 { font-size: 25px; margin-bottom: 0; }
-.analytics { display: grid; grid-template-columns: 148px minmax(0,1fr); column-gap: 12px; padding: 17px 15px 12px; }
-.section-heading { grid-column: 1 / -1; margin-bottom: 5px; }
-.chart-area { grid-column: 1; grid-row: 2; width: 148px; height: 166px; }
-.chart-area svg { width: 148px; height: 148px; }
-.chart-center strong { font-size: 29px; }
-.chart-center span { max-width: 83px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
-.chart-center:before { top: -15px; }
-.legend { grid-column: 2; grid-row: 2; align-self: center; max-height: 172px; overflow-y: auto; }
-.legend-row { display: grid; grid-template-columns: 6px minmax(0,1fr) auto; gap: 6px; padding: 9px 3px; }
-.legend-row .color-dot { width: 6px; height: 6px; }
-.legend-name { font-size: 10px; }
-.legend-count { grid-column: 2; grid-row: 2; font-size: 9px; }
-.legend-percent { grid-column: 3; grid-row: 1 / 3; width: auto; font-size: 10px; }
-.chart-caption { grid-column: 1 / -1; min-height: 15px; font-size: 9px; margin-bottom: 2px; }
-.chart-note { grid-column: 1 / -1; font-size: 8px; margin-top: 5px; padding-top: 8px; }
+.analytics { display: block; padding: 19px 18px 14px; border-radius: 22px; }
+.section-heading { margin-bottom: 4px; }
+.chart-area { width: 100%; height: 248px; }
+.chart-area svg { width: 242px; height: 242px; }
+.chart-center strong { font-size: 46px; font-weight: 550; line-height: 1.2; letter-spacing: -2px; }
+.chart-center span { font-size: 10px; margin-top: 4px; letter-spacing: .35px; }
+.chart-center:before { display: none; }
+.orbit-ruler { stroke-opacity: .18; }
+.orbit-guide { display: none; }
+.legend { gap: 0; max-height: 208px; overflow-y: auto; margin-top: 12px; }
+.legend-row { display: grid; grid-template-columns: 8px minmax(0,1fr) 42px 54px; gap: 10px; padding: 11px 8px; border-radius: 9px; }
+.legend-row .color-dot { width: 7px; height: 7px; }
+.legend-name { font-size: 12px; font-weight: 500; }
+.legend-count { text-align: right; font-size: 11px; }
+.legend-percent { width: auto; font-size: 11px; }
+.chart-caption { height: 29px; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1.4; margin: 0; padding: 0 4px; overflow: hidden; }
+.chart-note { font-size: 9px; margin-top: 12px; padding-top: 12px; }
 .segment { transition: opacity .18s,stroke-width .18s; }
 .floating-controls { margin-top: 10px; padding: 11px 13px; }
 .floating-heading p { font-size: 9px; }
